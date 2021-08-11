@@ -33,11 +33,11 @@ terraform {
 data "aws_region" "current" {}
 
 locals {
-  prom_svc     = "prometheus-server.${var.k8s_namespace}.svc.cluster.local"
-  loki_svc     = var.loki_mode == "distributed" ? "loki-distributed-gateway.${var.k8s_namespace}.svc.cluster.local" : "loki.${var.k8s_namespace}.svc.cluster.local:3100"
-  grafana_svc  = "grafana.${var.k8s_namespace}.svc.cluster.local"
-  has_bucket   = local.loki_storage_s3_bucket_name != "" ## --> defined in `loki-distributed.tf`
-  loki_enabled = var.loki_enabled && (local.has_bucket || var.loki_mode == "single")
+  prom_svc        = "prometheus-server.${var.k8s_namespace}.svc.cluster.local"
+  loki_svc        = var.loki_mode == "distributed" ? "loki-distributed-gateway.${var.k8s_namespace}.svc.cluster.local" : "loki.${var.k8s_namespace}.svc.cluster.local:3100"
+  grafana_svc     = "grafana.${var.k8s_namespace}.svc.cluster.local"
+  has_bucket_name = (local.s3_bucket_name == null && var.create_loki_storage) || local.s3_bucket_name != null
+  loki_enabled    = var.loki_enabled && (local.has_bucket_name || var.loki_mode == "single")
 }
 
 resource "helm_release" "prometheus" {
