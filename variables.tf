@@ -10,12 +10,6 @@ variable "k8s_namespace" {
   default     = "monitoring"
 }
 
-variable "cert_arn" {
-  type        = string
-  description = "ARN of TLS certificate from AWS Certificate Manager"
-  default     = ""
-}
-
 variable "prometheus_enabled" {
   type        = bool
   description = "Enable Prometheus?"

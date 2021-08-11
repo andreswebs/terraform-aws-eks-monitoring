@@ -22,7 +22,6 @@ Example:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cert_arn"></a> [cert\_arn](#input\_cert\_arn) | ARN of TLS certificate from AWS Certificate Manager | `string` | `""` | no |
 | <a name="input_chart_version_fluent_bit"></a> [chart\_version\_fluent\_bit](#input\_chart\_version\_fluent\_bit) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_grafana"></a> [chart\_version\_grafana](#input\_chart\_version\_grafana) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_loki"></a> [chart\_version\_loki](#input\_chart\_version\_loki) | Chart version | `string` | `null` | no |
