@@ -1,0 +1,37 @@
+formatter: markdown
+
+content: |-
+    {{ .Header }}
+
+    ## Usage
+
+    Example:
+    
+    ```hcl
+    {{ include "examples/main.tf" }}
+    ```
+
+    {{ .Footer }}
+
+    {{ .Inputs }}
+
+    {{ .Modules }}
+
+    {{ .Outputs }}
+
+    {{ .Providers }}
+
+    {{ .Requirements }}
+
+    {{ .Resources }}
+
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    [//]: # (BEGIN_TF_DOCS)
+    {{ .Content }}
+
+    [//]: # (END_TF_DOCS)
+

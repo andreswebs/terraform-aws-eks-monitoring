@@ -1,0 +1,45 @@
+---
+checks:
+
+  - code: XHELM001
+    description: Ensure that Helm chart releases are versioned
+    severity: ERROR
+    errorMessage: Missing chart version
+    impact: Dependent resources may break when latest chart versions are deployed implicitly
+    resolution: Add a version number
+    requiredTypes:
+      - resource
+    requiredLabels:
+      - helm_release
+    matchSpec:
+      name: version
+      action: isPresent
+
+  - code: XHELM002
+    description: Ensure that Helm chart repositories are reached through HTTPS
+    severity: ERROR
+    errorMessage: Chart repository not using HTTPS
+    impact: Unverified domains may serve malicious content
+    resolution: Use HTTPS URLs
+    requiredTypes:
+      - resource
+    requiredLabels:
+      - helm_release
+    matchSpec:
+      name: repository
+      action: startsWith
+      value: https
+
+  - code: XAWSIAM001
+    description: Use data resource with IAM policies
+    errorMessage: Missing policy document
+    severity: INFO
+    impact: Potential typos when writing literal JSON
+    resolution: Use `data.aws_iam_policy_document` for declaring IAM policies
+    requiredTypes:
+      - resource
+    requiredLabels:
+      - aws_iam_policy
+    matchSpec:
+      name: aws_iam_policy_document
+      action: requiresPresence
