@@ -13,7 +13,7 @@ kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/lat
 Example:
 
 ```hcl
-module "monitoring_resources" {
+module "monitoring" {
   source = "github.com/andreswebs/terraform-aws-eks-monitoring"
 
   cluster_oidc_provider = var.eks_cluster_oidc_provider
