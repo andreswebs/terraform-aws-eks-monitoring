@@ -74,10 +74,12 @@ module "monitoring_resources" {
 | <a name="input_loki_aggregator"></a> [loki\_aggregator](#input\_loki\_aggregator) | Loki aggregator to install, must be either `promtail` or `fluent-bit` | `string` | `"promtail"` | no |
 | <a name="input_loki_compactor_iam_role_arn"></a> [loki\_compactor\_iam\_role\_arn](#input\_loki\_compactor\_iam\_role\_arn) | Loki compactor IAM role ARN | `string` | `""` | no |
 | <a name="input_loki_compactor_service_account_name"></a> [loki\_compactor\_service\_account\_name](#input\_loki\_compactor\_service\_account\_name) | Name of the Kubernetes service account for the Loki compactor | `string` | `"loki-compactor"` | no |
+| <a name="input_loki_enabled"></a> [loki\_enabled](#input\_loki\_enabled) | Enable Loki? | `bool` | `true` | no |
 | <a name="input_loki_iam_role_arn"></a> [loki\_iam\_role\_arn](#input\_loki\_iam\_role\_arn) | Loki IAM role ARN | `string` | `""` | no |
 | <a name="input_loki_mode"></a> [loki\_mode](#input\_loki\_mode) | Loki mode, must be either `single` or `distributed` | `string` | `"distributed"` | no |
 | <a name="input_loki_service_account_name"></a> [loki\_service\_account\_name](#input\_loki\_service\_account\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki-distributed"` | no |
 | <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of S3 bucket created for Loki storage | `string` | `""` | no |
+| <a name="input_prometheus_enabled"></a> [prometheus\_enabled](#input\_prometheus\_enabled) | Enable Prometheus? | `bool` | `true` | no |
 
 ## Modules
 

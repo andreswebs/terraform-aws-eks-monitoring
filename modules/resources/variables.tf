@@ -4,6 +4,25 @@ variable "k8s_namespace" {
   default     = "monitoring"
 }
 
+
+variable "prometheus_enabled" {
+  type        = bool
+  description = "Enable Prometheus?"
+  default     = true
+}
+
+variable "loki_enabled" {
+  type        = bool
+  description = "Enable Loki?"
+  default     = true
+}
+
+variable "grafana_enabled" {
+  type        = bool
+  description = "Enable Grafana?"
+  default     = false
+}
+
 variable "loki_mode" {
   type = string
   description = "Loki mode, must be either `single` or `distributed`"
@@ -76,12 +95,6 @@ variable "grafana_iam_role_arn" {
   type        = string
   description = "Grafana IAM role ARN"
   default     = ""
-}
-
-variable "grafana_enabled" {
-  type        = bool
-  description = "Enable Grafana?"
-  default     = false
 }
 
 ## chart versions
