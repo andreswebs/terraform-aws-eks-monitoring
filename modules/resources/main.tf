@@ -246,5 +246,5 @@ locals {
   release_prometheus = var.prometheus_enabled ? helm_release.prometheus[0] : null
   release_loki       = local.loki_enabled ? (var.loki_mode == "distributed" ? helm_release.loki_distributed[0] : helm_release.loki[0]) : null
   release_aggregator = local.loki_enabled ? (var.loki_aggregator == "promtail" ? helm_release.promtail[0] : helm_release.fluent_bit[0]) : null
-  namespace          = var.prometheus_enabled ? local.release_prometheus.metadata.namespace : (var.grafana_enabled ? local.release_grafana.metadata.namespace : (local.loki_enabled ? local.release_loki.metadata.namespace : null))
+  namespace          = var.prometheus_enabled ? local.release_prometheus.metadata[0].namespace : (var.grafana_enabled ? local.release_grafana.metadata[0].namespace : (local.loki_enabled ? local.release_loki.metadata[0].namespace : null))
 }
