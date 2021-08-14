@@ -36,7 +36,7 @@ locals {
   prom_svc        = "prometheus-server.${var.k8s_namespace}.svc.cluster.local"
   loki_svc        = var.loki_mode == "distributed" ? "loki-distributed-gateway.${var.k8s_namespace}.svc.cluster.local" : "loki.${var.k8s_namespace}.svc.cluster.local:3100"
   grafana_svc     = "grafana.${var.k8s_namespace}.svc.cluster.local"
-  has_bucket_name = (local.s3_bucket_name == null && var.create_loki_storage) || local.s3_bucket_name != null
+  has_bucket_name = var.loki_storage_s3_bucket_name != null && var.loki_storage_s3_bucket_name != ""
   loki_enabled    = var.loki_enabled && (local.has_bucket_name || var.loki_mode == "single")
 }
 
@@ -166,7 +166,7 @@ resource "helm_release" "loki_distributed" {
   values = [
     templatefile("${path.module}/helm-values/loki-distributed.yml.tpl", {
       aws_region                          = data.aws_region.current.name
-      bucket_name                         = local.loki_storage_s3_bucket_name
+      bucket_name                         = var.loki_storage_s3_bucket_name
       loki_iam_role_arn                   = var.loki_iam_role_arn
       loki_service_account_name           = var.loki_service_account_name
       loki_compactor_iam_role_arn         = var.loki_compactor_iam_role_arn

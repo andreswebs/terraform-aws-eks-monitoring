@@ -36,7 +36,24 @@ resource "random_id" "id" {
 
 locals {
   s3_bucket_name_norm = var.loki_storage_s3_bucket_name == "" ? null : var.loki_storage_s3_bucket_name
-  s3_bucket_name      = var.create_loki_storage_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
+  s3_bucket_name_pre  = var.create_loki_storage_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
+}
+
+module "log_storage" {
+  count                           = var.create_loki_storage ? 1 : 0
+  source                          = "./modules/storage"
+  s3_force_destroy                = var.loki_storage_s3_force_destroy
+  s3_bucket_name                  = local.s3_bucket_name
+  create_s3_bucket_id_suffix      = var.create_loki_storage_id_suffix
+  create_kms_key                  = var.create_loki_storage_kms_key
+  kms_key_arn                     = var.loki_storage_kms_key_arn
+  kms_key_deletion_window_in_days = var.loki_storage_kms_key_deletion_window_in_days
+  kms_key_enable_rotation         = var.loki_storage_kms_key_enable_rotation
+  expiration_days                 = var.loki_storage_expiration_days
+}
+
+locals {
+  s3_bucket_name = var.create_loki_storage ? module.log_storage[0].bucket.id : (local.s3_bucket_name_pre == null ? "" : local.s3_bucket_name_pre)
 }
 
 module "iam" {
@@ -53,7 +70,7 @@ module "iam" {
   loki_compactor_iam_role_name = var.loki_compactor_iam_role_name
   grafana_iam_role_name        = var.grafana_iam_role_name
 
-  loki_storage_s3_bucket_name = local.s3_bucket_name == null ? "" : local.s3_bucket_name
+  loki_storage_s3_bucket_name = local.s3_bucket_name
 
   grafana_enabled = var.grafana_enabled
   loki_enabled    = var.loki_enabled
@@ -72,9 +89,7 @@ module "resources" {
   loki_compactor_iam_role_arn = var.loki_enabled ? module.iam.role.loki_compactor.arn : null
   grafana_iam_role_arn        = var.grafana_enabled ? module.iam.role.grafana.arn : null
 
-  create_loki_storage           = var.create_loki_storage
-  create_loki_storage_id_suffix = false
-  loki_storage_s3_bucket_name   = local.s3_bucket_name
+  loki_storage_s3_bucket_name = local.s3_bucket_name
 
   chart_version_prometheus       = var.chart_version_prometheus
   chart_version_promtail         = var.chart_version_promtail

@@ -3,11 +3,6 @@ output "namespace" {
   value       = local.namespace
 }
 
-output "loki_storage" {
-  description = "The Loki storage S3 bucket, if created"
-  value       = var.create_loki_storage ? aws_s3_bucket.loki_storage[0] : null
-}
-
 output "svc" {
   description = "Local Kubernetes service FQDNs"
   value = {

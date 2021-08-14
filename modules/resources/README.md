@@ -44,8 +44,6 @@ module "monitoring_resources" {
 | <a name="input_chart_version_loki_distributed"></a> [chart\_version\_loki\_distributed](#input\_chart\_version\_loki\_distributed) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_prometheus"></a> [chart\_version\_prometheus](#input\_chart\_version\_prometheus) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_promtail"></a> [chart\_version\_promtail](#input\_chart\_version\_promtail) | Chart version | `string` | `null` | no |
-| <a name="input_create_loki_storage"></a> [create\_loki\_storage](#input\_create\_loki\_storage) | Create S3 bucket for Loki storage? | `bool` | `false` | no |
-| <a name="input_create_loki_storage_id_suffix"></a> [create\_loki\_storage\_id\_suffix](#input\_create\_loki\_storage\_id\_suffix) | Append a random identifier string suffix to the Loki storage S3 bucket name? | `bool` | `false` | no |
 | <a name="input_grafana_enabled"></a> [grafana\_enabled](#input\_grafana\_enabled) | Enable Grafana? | `bool` | `false` | no |
 | <a name="input_grafana_iam_role_arn"></a> [grafana\_iam\_role\_arn](#input\_grafana\_iam\_role\_arn) | Grafana IAM role ARN | `string` | `""` | no |
 | <a name="input_grafana_service_account_name"></a> [grafana\_service\_account\_name](#input\_grafana\_service\_account\_name) | Name of the Kubernetes service account for Grafana | `string` | `"grafana"` | no |
@@ -89,7 +87,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_loki_storage"></a> [loki\_storage](#output\_loki\_storage) | The Loki storage S3 bucket, if created |
 | <a name="output_namespace"></a> [namespace](#output\_namespace) | The name (`metadata.name`) of the Kubernetes namespace |
 | <a name="output_release"></a> [release](#output\_release) | Helm releases |
 | <a name="output_svc"></a> [svc](#output\_svc) | Local Kubernetes service FQDNs |
@@ -100,7 +97,6 @@ No modules.
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.48.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.2.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Requirements
 
@@ -115,15 +111,12 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_s3_bucket.loki_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_public_access_block.loki_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [helm_release.fluent_bit](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.grafana](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.loki](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.loki_distributed](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.prometheus](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.promtail](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [random_id.id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 [//]: # (END_TF_DOCS)

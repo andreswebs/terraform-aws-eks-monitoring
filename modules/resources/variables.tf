@@ -43,18 +43,6 @@ variable "loki_aggregator" {
   }
 }
 
-variable "create_loki_storage" {
-  type        = bool
-  description = "Create S3 bucket for Loki storage?"
-  default     = false
-}
-
-variable "create_loki_storage_id_suffix" {
-  type        = bool
-  description = "Append a random identifier string suffix to the Loki storage S3 bucket name?"
-  default     = false
-}
-
 variable "loki_storage_s3_bucket_name" {
   type        = string
   description = "Name of S3 bucket created for Loki storage"
