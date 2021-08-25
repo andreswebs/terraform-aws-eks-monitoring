@@ -22,6 +22,16 @@ variable "kms_key_arn" {
   default     = null
 }
 
+variable "kms_key_alias" {
+  type = string
+  description = "(Optional) An alias for the generated KMS key; must start with `alias/`"
+  default = ""
+  validation {
+    condition = var.kms_key_alias == "" || (length(var.kms_key_alias) > 6 && substr(var.kms_key_alias, 0, 6) == "alias/")
+    error_message = "Must start with `alias/` ."
+  }
+}
+
 variable "kms_key_deletion_window_in_days" {
   type        = number
   description = "KMS key deletion window in days"

@@ -5,6 +5,12 @@ resource "aws_kms_key" "this" {
   deletion_window_in_days = var.kms_key_deletion_window_in_days
 }
 
+resource "aws_kms_alias" "this" {
+  count         = var.create_kms_key && var.kms_key_alias != "" ? 1 : 0
+  name          = var.kms_key_alias
+  target_key_id = aws_kms_key.this[0].key_id
+}
+
 locals {
   s3_bucket_name_norm = var.s3_bucket_name == "" ? null : var.s3_bucket_name
   s3_bucket_name      = var.create_s3_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
