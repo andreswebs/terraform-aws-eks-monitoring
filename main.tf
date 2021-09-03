@@ -54,6 +54,7 @@ module "log_storage" {
 
 locals {
   s3_bucket_name = var.create_loki_storage ? module.log_storage[0].bucket.id : (local.s3_bucket_name_pre == null ? "" : local.s3_bucket_name_pre)
+  kms_key_arn    = var.create_loki_storage_kms_key ? module.log_storage[0].encryption_key.arn : var.loki_storage_kms_key_arn
 }
 
 module "iam" {
@@ -71,6 +72,7 @@ module "iam" {
   grafana_iam_role_name        = var.grafana_iam_role_name
 
   loki_storage_s3_bucket_name = local.s3_bucket_name
+  loki_storage_kms_key_arn    = local.kms_key_arn
 
   grafana_enabled = var.grafana_enabled
   loki_enabled    = var.loki_enabled
