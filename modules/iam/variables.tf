@@ -47,6 +47,12 @@ variable "loki_storage_s3_bucket_name" {
   default     = ""
 }
 
+variable "loki_storage_kms_key_arn" {
+  type = string
+  description = "(Optional) ARN of the KMS key used for S3 encryption"
+  default = ""
+}
+
 ## end loki
 
 ## grafana

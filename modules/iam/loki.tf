@@ -1,9 +1,10 @@
-## policy document
+## policy documents
 
 data "aws_partition" "current" {}
 
 locals {
   loki_enabled  = var.loki_enabled && var.loki_storage_s3_bucket_name != "" && var.loki_storage_s3_bucket_name != null
+  kms_enabled   = var.loki_enabled && var.loki_storage_kms_key_arn != "" && var.loki_storage_kms_key_arn != null
   s3_bucket_arn = "arn:${data.aws_partition.current.partition}:s3:::${var.loki_storage_s3_bucket_name}"
 }
 
@@ -34,7 +35,31 @@ data "aws_iam_policy_document" "bucket_crud" {
 
 }
 
-## end policy document
+data "aws_iam_policy_document" "kms_permissions" {
+  count = local.kms_enabled ? 1 : 0
+  statement {
+    sid = "AllowUseKey"
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = [var.loki_storage_kms_key_arn]
+  }
+}
+
+locals {
+  loki_permission_documents = compact([
+    (local.loki_enabled ? data.aws_iam_policy_document.bucket_crud[0].json : ""),
+    (local.kms_enabled ? data.aws_iam_policy_document.kms_permissions[0].json : "")
+  ])
+}
+
+data "aws_iam_policy_document" "loki_permissions" {
+  count = local.loki_enabled ? 1 : 0
+  source_policy_documents = local.loki_permission_documents
+}
+
+## end policy documents
 
 ## loki role
 
@@ -62,7 +87,7 @@ resource "aws_iam_role_policy" "loki_permissions" {
   count  = local.loki_enabled ? 1 : 0
   name   = "loki-permissions"
   role   = aws_iam_role.loki[0].id
-  policy = data.aws_iam_policy_document.bucket_crud[0].json
+  policy = data.aws_iam_policy_document.loki_permissions[0].json
 }
 
 ## end loki role
@@ -93,7 +118,7 @@ resource "aws_iam_role_policy" "loki_compactor_permissions" {
   count  = local.loki_enabled ? 1 : 0
   name   = "loki-compactor-permissions"
   role   = aws_iam_role.loki_compactor[0].id
-  policy = data.aws_iam_policy_document.bucket_crud[0].json
+  policy = data.aws_iam_policy_document.loki_permissions[0].json
 }
 
 ## end loki compactor role
