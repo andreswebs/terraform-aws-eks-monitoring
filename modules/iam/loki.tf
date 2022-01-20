@@ -1,6 +1,5 @@
 ## policy documents
 
-data "aws_partition" "current" {}
 
 locals {
   loki_enabled  = var.loki_enabled && var.loki_storage_s3_bucket_name != "" && var.loki_storage_s3_bucket_name != null
