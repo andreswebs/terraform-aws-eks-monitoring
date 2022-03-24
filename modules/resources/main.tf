@@ -1,12 +1,3 @@
-/**
-* Deploys Helm charts and other resources.
-*
-* **Note**: This module depends on an imperative deployment of Metrics Server:
-* ```sh
-* kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
-* ```
-*/
-
 data "aws_region" "current" {}
 
 locals {
@@ -17,8 +8,38 @@ locals {
   loki_enabled    = var.loki_enabled && (local.has_bucket_name || var.loki_mode == "single")
 }
 
+resource "helm_release" "metrics_server" {
+  count      = var.prometheus_enabled || var.metrics_server_enabled ? 1 : 0
+  name       = var.helm_release_name_metrics_server
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart      = "metrics-server"
+  namespace  = var.k8s_namespace
+  version    = var.chart_version_metrics_server
+
+  recreate_pods     = var.helm_recreate_pods
+  atomic            = var.helm_atomic_creation
+  cleanup_on_fail   = var.helm_cleanup_on_fail
+  wait              = var.helm_wait_for_completion
+  wait_for_jobs     = var.helm_wait_for_jobs
+  timeout           = var.helm_timeout_seconds
+  max_history       = var.helm_max_history
+  verify            = var.helm_verify
+  keyring           = var.helm_keyring
+  reuse_values      = var.helm_reuse_values
+  reset_values      = var.helm_reset_values
+  force_update      = var.helm_force_update
+  replace           = var.helm_replace
+  create_namespace  = var.helm_create_namespace
+  dependency_update = var.helm_dependency_update
+  skip_crds         = var.helm_skip_crds
+
+}
+
 resource "helm_release" "prometheus" {
-  count      = var.prometheus_enabled ? 1 : 0
+  count = var.prometheus_enabled ? 1 : 0
+  depends_on = [
+    helm_release.metrics_server,
+  ]
   name       = var.helm_release_name_prometheus
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
@@ -219,9 +240,10 @@ resource "helm_release" "promtail" {
 }
 
 locals {
-  release_grafana    = var.grafana_enabled ? helm_release.grafana[0] : null
-  release_prometheus = var.prometheus_enabled ? helm_release.prometheus[0] : null
-  release_loki       = local.loki_enabled ? (var.loki_mode == "distributed" ? helm_release.loki_distributed[0] : helm_release.loki[0]) : null
-  release_aggregator = local.loki_enabled ? (var.loki_aggregator == "promtail" ? helm_release.promtail[0] : helm_release.fluent_bit[0]) : null
-  namespace          = var.prometheus_enabled ? local.release_prometheus.metadata[0].namespace : (var.grafana_enabled ? local.release_grafana.metadata[0].namespace : (local.loki_enabled ? local.release_loki.metadata[0].namespace : null))
+  release_metrics_server = var.prometheus_enabled || var.metrics_server_enabled ? helm_release.metrics_server[0] : null
+  release_grafana        = var.grafana_enabled ? helm_release.grafana[0] : null
+  release_prometheus     = var.prometheus_enabled ? helm_release.prometheus[0] : null
+  release_loki           = local.loki_enabled ? (var.loki_mode == "distributed" ? helm_release.loki_distributed[0] : helm_release.loki[0]) : null
+  release_aggregator     = local.loki_enabled ? (var.loki_aggregator == "promtail" ? helm_release.promtail[0] : helm_release.fluent_bit[0]) : null
+  namespace              = var.prometheus_enabled ? local.release_prometheus.metadata[0].namespace : (var.grafana_enabled ? local.release_grafana.metadata[0].namespace : (local.loki_enabled ? local.release_loki.metadata[0].namespace : null))
 }

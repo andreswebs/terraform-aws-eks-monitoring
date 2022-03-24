@@ -1,5 +1,7 @@
 # terraform-aws-eks-monitoring storage
 
+Deploys storage resources for Loki.
+
 [//]: # (BEGIN_TF_DOCS)
 
 
@@ -49,15 +51,15 @@ No modules.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.50.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.50 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.50.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.50 |
 
 ## Resources
 

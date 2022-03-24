@@ -10,6 +10,12 @@ variable "k8s_namespace" {
   default     = "monitoring"
 }
 
+variable "metrics_server_enabled" {
+  type        = bool
+  description = "Enable Metrics Server?"
+  default     = true
+}
+
 variable "prometheus_enabled" {
   type        = bool
   description = "Enable Prometheus?"
@@ -121,6 +127,12 @@ variable "grafana_k8s_sa_name" {
 }
 
 ## chart versions
+
+variable "chart_version_metrics_server" {
+  type        = string
+  description = "Chart version"
+  default     = null
+}
 
 variable "chart_version_prometheus" {
   type        = string

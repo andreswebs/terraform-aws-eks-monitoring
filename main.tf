@@ -1,12 +1,3 @@
-/**
-* Deploys the "Grafana + Prometheus + Loki" monitoring stack via Helm on AWS EKS.
-*
-* **Note**: This module depends on an imperative deployment of Metrics Server:
-* ```sh
-* kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
-* ```
-*/
-
 resource "random_id" "id" {
   count       = var.create_loki_storage_id_suffix ? 1 : 0
   byte_length = 8
@@ -61,6 +52,11 @@ module "resources" {
 
   k8s_namespace = var.k8s_namespace
 
+  metrics_server_enabled = var.metrics_server_enabled
+  prometheus_enabled     = var.prometheus_enabled
+  loki_enabled           = var.loki_enabled
+  grafana_enabled        = var.grafana_enabled
+
   loki_k8s_sa_name           = var.loki_k8s_sa_name
   loki_compactor_k8s_sa_name = var.loki_compactor_k8s_sa_name
   grafana_k8s_sa_name        = var.grafana_k8s_sa_name
@@ -71,6 +67,7 @@ module "resources" {
 
   loki_storage_s3_bucket_name = local.s3_bucket_name
 
+  chart_version_metrics_server   = var.chart_version_metrics_server
   chart_version_prometheus       = var.chart_version_prometheus
   chart_version_promtail         = var.chart_version_promtail
   chart_version_loki_distributed = var.chart_version_loki_distributed

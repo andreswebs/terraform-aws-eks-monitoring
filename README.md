@@ -1,12 +1,9 @@
 # terraform-aws-eks-monitoring
 
-[//]: # (BEGIN_TF_DOCS)
 Deploys the "Grafana + Prometheus + Loki" monitoring stack via Helm on AWS EKS.
 
-**Note**: This module depends on an imperative deployment of Metrics Server:
-```sh
-kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
-```
+[//]: # (BEGIN_TF_DOCS)
+
 
 ## Usage
 
@@ -44,6 +41,7 @@ module "monitoring" {
 | <a name="input_chart_version_grafana"></a> [chart\_version\_grafana](#input\_chart\_version\_grafana) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_loki"></a> [chart\_version\_loki](#input\_chart\_version\_loki) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_loki_distributed"></a> [chart\_version\_loki\_distributed](#input\_chart\_version\_loki\_distributed) | Chart version | `string` | `null` | no |
+| <a name="input_chart_version_metrics_server"></a> [chart\_version\_metrics\_server](#input\_chart\_version\_metrics\_server) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_prometheus"></a> [chart\_version\_prometheus](#input\_chart\_version\_prometheus) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_promtail"></a> [chart\_version\_promtail](#input\_chart\_version\_promtail) | Chart version | `string` | `null` | no |
 | <a name="input_cluster_oidc_provider"></a> [cluster\_oidc\_provider](#input\_cluster\_oidc\_provider) | OpenID Connect (OIDC) Identity Provider associated with the Kubernetes cluster | `string` | `""` | no |
@@ -64,6 +62,7 @@ module "monitoring" {
 | <a name="input_loki_storage_kms_key_enable_rotation"></a> [loki\_storage\_kms\_key\_enable\_rotation](#input\_loki\_storage\_kms\_key\_enable\_rotation) | Enable KMS key rotation? | `bool` | `true` | no |
 | <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of S3 bucket used for Loki storage | `string` | `""` | no |
 | <a name="input_loki_storage_s3_force_destroy"></a> [loki\_storage\_s3\_force\_destroy](#input\_loki\_storage\_s3\_force\_destroy) | Force destroy bucket when running `terraform destroy`? | `bool` | `false` | no |
+| <a name="input_metrics_server_enabled"></a> [metrics\_server\_enabled](#input\_metrics\_server\_enabled) | Enable Metrics Server? | `bool` | `true` | no |
 | <a name="input_prometheus_enabled"></a> [prometheus\_enabled](#input\_prometheus\_enabled) | Enable Prometheus? | `bool` | `true` | no |
 
 ## Modules
