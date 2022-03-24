@@ -4,6 +4,11 @@ variable "k8s_namespace" {
   default     = "monitoring"
 }
 
+variable "metrics_server_enabled" {
+  type        = bool
+  description = "Enable Metrics Server?"
+  default     = true
+}
 
 variable "prometheus_enabled" {
   type        = bool
@@ -24,21 +29,21 @@ variable "grafana_enabled" {
 }
 
 variable "loki_mode" {
-  type = string
+  type        = string
   description = "Loki mode, must be either `single` or `distributed`"
-  default = "distributed"
+  default     = "distributed"
   validation {
-    condition = can(regex("^single|distributed$", var.loki_mode))
+    condition     = can(regex("^single|distributed$", var.loki_mode))
     error_message = "Must be one of `single` or `distributed`."
   }
 }
 
 variable "loki_aggregator" {
-  type = string
+  type        = string
   description = "Loki aggregator to install, must be either `promtail` or `fluent-bit`"
-  default = "promtail"
+  default     = "promtail"
   validation {
-    condition = can(regex("^promtail|fluent-bit", var.loki_aggregator))
+    condition     = can(regex("^promtail|fluent-bit", var.loki_aggregator))
     error_message = "Must be one of `promtail` or `fluent-bit`."
   }
 }
@@ -87,6 +92,12 @@ variable "grafana_iam_role_arn" {
 
 ## chart versions
 
+variable "chart_version_metrics_server" {
+  type        = string
+  description = "Chart version"
+  default     = null
+}
+
 variable "chart_version_prometheus" {
   type        = string
   description = "Chart version"
@@ -126,6 +137,12 @@ variable "chart_version_loki" {
 ## end chart versions
 
 ## helm
+
+variable "helm_release_name_metrics_server" {
+  type        = string
+  description = "Release name"
+  default     = "metrics-server"
+}
 
 variable "helm_release_name_prometheus" {
   type        = string

@@ -1,12 +1,9 @@
 # terraform-aws-eks-monitoring resources
 
-[//]: # (BEGIN_TF_DOCS)
 Deploys Helm charts and other resources.
 
-**Note**: This module depends on an imperative deployment of Metrics Server:
-```sh
-kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
-```
+[//]: # (BEGIN_TF_DOCS)
+
 
 ## Usage
 
@@ -42,6 +39,7 @@ module "monitoring_resources" {
 | <a name="input_chart_version_grafana"></a> [chart\_version\_grafana](#input\_chart\_version\_grafana) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_loki"></a> [chart\_version\_loki](#input\_chart\_version\_loki) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_loki_distributed"></a> [chart\_version\_loki\_distributed](#input\_chart\_version\_loki\_distributed) | Chart version | `string` | `null` | no |
+| <a name="input_chart_version_metrics_server"></a> [chart\_version\_metrics\_server](#input\_chart\_version\_metrics\_server) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_prometheus"></a> [chart\_version\_prometheus](#input\_chart\_version\_prometheus) | Chart version | `string` | `null` | no |
 | <a name="input_chart_version_promtail"></a> [chart\_version\_promtail](#input\_chart\_version\_promtail) | Chart version | `string` | `null` | no |
 | <a name="input_grafana_enabled"></a> [grafana\_enabled](#input\_grafana\_enabled) | Enable Grafana? | `bool` | `false` | no |
@@ -58,6 +56,7 @@ module "monitoring_resources" {
 | <a name="input_helm_release_name_fluent_bit"></a> [helm\_release\_name\_fluent\_bit](#input\_helm\_release\_name\_fluent\_bit) | Release name | `string` | `"fluent-bit"` | no |
 | <a name="input_helm_release_name_grafana"></a> [helm\_release\_name\_grafana](#input\_helm\_release\_name\_grafana) | Release name | `string` | `"grafana"` | no |
 | <a name="input_helm_release_name_loki"></a> [helm\_release\_name\_loki](#input\_helm\_release\_name\_loki) | Release name | `string` | `"loki"` | no |
+| <a name="input_helm_release_name_metrics_server"></a> [helm\_release\_name\_metrics\_server](#input\_helm\_release\_name\_metrics\_server) | Release name | `string` | `"metrics-server"` | no |
 | <a name="input_helm_release_name_prometheus"></a> [helm\_release\_name\_prometheus](#input\_helm\_release\_name\_prometheus) | Release name | `string` | `"prometheus"` | no |
 | <a name="input_helm_release_name_promtail"></a> [helm\_release\_name\_promtail](#input\_helm\_release\_name\_promtail) | Release name | `string` | `"promtail"` | no |
 | <a name="input_helm_replace"></a> [helm\_replace](#input\_helm\_replace) | Re-use the given name, even if that name is already used; this is unsafe in production | `bool` | `false` | no |
@@ -77,6 +76,7 @@ module "monitoring_resources" {
 | <a name="input_loki_mode"></a> [loki\_mode](#input\_loki\_mode) | Loki mode, must be either `single` or `distributed` | `string` | `"distributed"` | no |
 | <a name="input_loki_service_account_name"></a> [loki\_service\_account\_name](#input\_loki\_service\_account\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki-distributed"` | no |
 | <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of S3 bucket created for Loki storage | `string` | `""` | no |
+| <a name="input_metrics_server_enabled"></a> [metrics\_server\_enabled](#input\_metrics\_server\_enabled) | Enable Metrics Server? | `bool` | `true` | no |
 | <a name="input_prometheus_enabled"></a> [prometheus\_enabled](#input\_prometheus\_enabled) | Enable Prometheus? | `bool` | `true` | no |
 
 ## Modules
@@ -95,17 +95,17 @@ No modules.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.50.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.50 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.2 |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.50.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.2.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.50 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.2 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
 
 ## Resources
 
@@ -115,6 +115,7 @@ No modules.
 | [helm_release.grafana](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.loki](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.loki_distributed](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.metrics_server](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.prometheus](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.promtail](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
