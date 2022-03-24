@@ -5,7 +5,7 @@ on:
       - main
   pull_request:
     branches:
-      - main      
+      - main
 jobs:
   tfsec:
     name: tfsec sarif report
@@ -16,11 +16,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: tfsec
-        uses: tfsec/tfsec-sarif-action@master
+        uses: aquasecurity/tfsec-sarif-action@v0.1.0
         with:
           config_file: .tfsec/config.yml
-          sarif_file: tfsec.sarif         
-          tfsec_args: --detailed-exit-code
+          sarif_file: tfsec.sarif
 
       - name: Archive SARIF file
         uses: actions/upload-artifact@v2
