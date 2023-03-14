@@ -48,7 +48,7 @@ module "monitoring" {
 | <a name="input_create_loki_storage"></a> [create\_loki\_storage](#input\_create\_loki\_storage) | Create S3 bucket for Loki storage? | `bool` | `false` | no |
 | <a name="input_create_loki_storage_id_suffix"></a> [create\_loki\_storage\_id\_suffix](#input\_create\_loki\_storage\_id\_suffix) | Append a random identifier string suffix to the Loki storage S3 bucket name? | `bool` | `false` | no |
 | <a name="input_create_loki_storage_kms_key"></a> [create\_loki\_storage\_kms\_key](#input\_create\_loki\_storage\_kms\_key) | Create KMS key? | `bool` | `true` | no |
-| <a name="input_grafana_enabled"></a> [grafana\_enabled](#input\_grafana\_enabled) | Enable Grafana? | `bool` | `false` | no |
+| <a name="input_grafana_enabled"></a> [grafana\_enabled](#input\_grafana\_enabled) | Enable Grafana? | `bool` | `true` | no |
 | <a name="input_grafana_k8s_sa_name"></a> [grafana\_k8s\_sa\_name](#input\_grafana\_k8s\_sa\_name) | Name of the Kubernetes service account for Grafana | `string` | `"grafana"` | no |
 | <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | Name of the Kubernetes namespace to which resources will be deployed | `string` | `"monitoring"` | no |
 | <a name="input_loki_aggregator"></a> [loki\_aggregator](#input\_loki\_aggregator) | Loki aggregator to install, must be either `promtail` or `fluent-bit` | `string` | `"promtail"` | no |
@@ -56,12 +56,12 @@ module "monitoring" {
 | <a name="input_loki_enabled"></a> [loki\_enabled](#input\_loki\_enabled) | Enable Loki? | `bool` | `true` | no |
 | <a name="input_loki_k8s_sa_name"></a> [loki\_k8s\_sa\_name](#input\_loki\_k8s\_sa\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki"` | no |
 | <a name="input_loki_mode"></a> [loki\_mode](#input\_loki\_mode) | Loki mode, must be either `single` or `distributed` | `string` | `"distributed"` | no |
-| <a name="input_loki_storage_expiration_days"></a> [loki\_storage\_expiration\_days](#input\_loki\_storage\_expiration\_days) | Number of days to retain objects; `0` means never expire | `number` | `0` | no |
+| <a name="input_loki_storage_expiration_days"></a> [loki\_storage\_expiration\_days](#input\_loki\_storage\_expiration\_days) | Number of days to retain objects; `0` means never expire | `number` | `90` | no |
 | <a name="input_loki_storage_kms_key_arn"></a> [loki\_storage\_kms\_key\_arn](#input\_loki\_storage\_kms\_key\_arn) | (Optional) ARN of KMS key used to encrypt bucket objects; ignored if `create_kms_key` is set to `true` | `string` | `null` | no |
 | <a name="input_loki_storage_kms_key_deletion_window_in_days"></a> [loki\_storage\_kms\_key\_deletion\_window\_in\_days](#input\_loki\_storage\_kms\_key\_deletion\_window\_in\_days) | KMS key deletion window in days | `number` | `30` | no |
 | <a name="input_loki_storage_kms_key_enable_rotation"></a> [loki\_storage\_kms\_key\_enable\_rotation](#input\_loki\_storage\_kms\_key\_enable\_rotation) | Enable KMS key rotation? | `bool` | `true` | no |
 | <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of S3 bucket used for Loki storage | `string` | `""` | no |
-| <a name="input_loki_storage_s3_force_destroy"></a> [loki\_storage\_s3\_force\_destroy](#input\_loki\_storage\_s3\_force\_destroy) | Force destroy bucket when running `terraform destroy`? | `bool` | `false` | no |
+| <a name="input_loki_storage_s3_force_destroy"></a> [loki\_storage\_s3\_force\_destroy](#input\_loki\_storage\_s3\_force\_destroy) | Force destroy bucket when running `terraform destroy`? | `bool` | `true` | no |
 | <a name="input_metrics_server_enabled"></a> [metrics\_server\_enabled](#input\_metrics\_server\_enabled) | Enable Metrics Server? | `bool` | `true` | no |
 | <a name="input_prometheus_enabled"></a> [prometheus\_enabled](#input\_prometheus\_enabled) | Enable Prometheus? | `bool` | `true` | no |
 

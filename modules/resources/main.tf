@@ -95,7 +95,7 @@ resource "helm_release" "grafana" {
   skip_crds         = var.helm_skip_crds
 
   values = [
-    templatefile("${path.module}/helm-values/grafana.yml.tpl", {
+    templatefile("${path.module}/helm-values/grafana.yml.tftpl", {
       aws_region                   = data.aws_region.current.name
       prom_svc                     = local.prom_svc
       loki_svc                     = local.loki_svc
@@ -162,7 +162,7 @@ resource "helm_release" "loki_distributed" {
   skip_crds         = var.helm_skip_crds
 
   values = [
-    templatefile("${path.module}/helm-values/loki-distributed.yml.tpl", {
+    templatefile("${path.module}/helm-values/loki-distributed.yml.tftpl", {
       aws_region                          = data.aws_region.current.name
       bucket_name                         = var.loki_storage_s3_bucket_name
       loki_iam_role_arn                   = var.loki_iam_role_arn
@@ -199,7 +199,7 @@ resource "helm_release" "fluent_bit" {
   skip_crds         = var.helm_skip_crds
 
   values = [
-    templatefile("${path.module}/helm-values/fluent-bit.yml.tpl", {
+    templatefile("${path.module}/helm-values/fluent-bit.yml.tftpl", {
       loki_svc = replace(local.loki_svc, ":3100", "")
     })
   ]
@@ -232,7 +232,7 @@ resource "helm_release" "promtail" {
   skip_crds         = var.helm_skip_crds
 
   values = [
-    templatefile("${path.module}/helm-values/promtail.yml.tpl", {
+    templatefile("${path.module}/helm-values/promtail.yml.tftpl", {
       loki_address = "http://${local.loki_svc}/loki/api/v1/push"
     })
   ]

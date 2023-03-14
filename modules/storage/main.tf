@@ -6,9 +6,14 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "this" {
-  count         = var.create_kms_key && var.kms_key_alias != "" ? 1 : 0
+  count         = var.create_kms_key && var.kms_key_alias != "" && var.kms_key_alias != null ? 1 : 0
   name          = var.kms_key_alias
   target_key_id = aws_kms_key.this[0].key_id
+}
+
+resource "random_id" "id" {
+  count       = var.create_s3_id_suffix ? 1 : 0
+  byte_length = 8
 }
 
 locals {
@@ -20,44 +25,14 @@ locals {
   expire_objects      = var.expiration_days != 0
 }
 
-resource "random_id" "id" {
-  count       = var.create_s3_id_suffix ? 1 : 0
-  byte_length = 8
+resource "aws_s3_bucket" "this" {
+  bucket        = local.s3_bucket_name
+  force_destroy = var.s3_force_destroy
 }
 
-resource "aws_s3_bucket" "this" {
-  bucket = local.s3_bucket_name
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.this.id
   acl    = "private"
-
-  force_destroy = var.s3_force_destroy
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = local.kms_key_arn
-        sse_algorithm     = local.sse_algorithm
-      }
-    }
-  }
-
-  dynamic "lifecycle_rule" {
-    for_each = local.expire_objects ? [1] : []
-    content {
-
-      id      = "expire"
-      enabled = true
-
-      tags = {
-        rule      = "expire"
-        autoclean = "true"
-      }
-
-      expiration {
-        days = var.expiration_days
-      }
-    }
-  }
-
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
@@ -68,3 +43,37 @@ resource "aws_s3_bucket_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.arteinvisivel_com_br.id
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = local.kms_key_arn
+      sse_algorithm     = local.sse_algorithm
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  count  = local.expire_objects ? 1 : 0
+  bucket = aws_s3_bucket.this.id
+
+  rule {
+
+    id = "expire"
+
+    filter {
+      and {
+        tags = {
+          rule      = "expire"
+          autoclean = "true"
+        }
+      }
+    }
+
+    expiration {
+      days = var.expiration_days
+    }
+
+    status = "Enabled"
+  }
+}

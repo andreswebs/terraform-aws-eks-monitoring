@@ -46,9 +46,9 @@ module "monitoring_iam" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_grafana_assume_role_policy"></a> [grafana\_assume\_role\_policy](#module\_grafana\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | 1.0.0 |
-| <a name="module_loki_assume_role_policy"></a> [loki\_assume\_role\_policy](#module\_loki\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | 1.0.0 |
-| <a name="module_loki_compactor_assume_role_policy"></a> [loki\_compactor\_assume\_role\_policy](#module\_loki\_compactor\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | 1.0.0 |
+| <a name="module_grafana_assume_role_policy"></a> [grafana\_assume\_role\_policy](#module\_grafana\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | ~> 1.0 |
+| <a name="module_loki_assume_role_policy"></a> [loki\_assume\_role\_policy](#module\_loki\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | ~> 1.0 |
+| <a name="module_loki_compactor_assume_role_policy"></a> [loki\_compactor\_assume\_role\_policy](#module\_loki\_compactor\_assume\_role\_policy) | andreswebs/eks-irsa-policy-document/aws | ~> 1.0 |
 
 ## Outputs
 
@@ -60,14 +60,14 @@ module "monitoring_iam" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.50 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.50 |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.50 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.50 |
 
 ## Resources
 

@@ -31,7 +31,7 @@ variable "loki_enabled" {
 variable "grafana_enabled" {
   type        = bool
   description = "Enable Grafana?"
-  default     = false
+  default     = true
 }
 
 variable "loki_mode" {
@@ -81,7 +81,7 @@ variable "loki_storage_s3_bucket_name" {
 variable "loki_storage_s3_force_destroy" {
   type        = bool
   description = "Force destroy bucket when running `terraform destroy`?"
-  default     = false
+  default     = true
 }
 
 variable "loki_storage_kms_key_arn" {
@@ -105,7 +105,7 @@ variable "loki_storage_kms_key_enable_rotation" {
 variable "loki_storage_expiration_days" {
   type        = number
   description = "Number of days to retain objects; `0` means never expire"
-  default     = 0
+  default     = 90
 }
 
 variable "loki_k8s_sa_name" {
