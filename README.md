@@ -49,13 +49,13 @@ module "monitoring" {
 | <a name="input_create_loki_storage_id_suffix"></a> [create\_loki\_storage\_id\_suffix](#input\_create\_loki\_storage\_id\_suffix) | Append a random identifier string suffix to the Loki storage S3 bucket name? | `bool` | `false` | no |
 | <a name="input_create_loki_storage_kms_key"></a> [create\_loki\_storage\_kms\_key](#input\_create\_loki\_storage\_kms\_key) | Create KMS key? | `bool` | `true` | no |
 | <a name="input_grafana_enabled"></a> [grafana\_enabled](#input\_grafana\_enabled) | Enable Grafana? | `bool` | `true` | no |
-| <a name="input_grafana_k8s_sa_name"></a> [grafana\_k8s\_sa\_name](#input\_grafana\_k8s\_sa\_name) | Name of the Kubernetes service account for Grafana | `string` | `"grafana"` | no |
+| <a name="input_grafana_service_account_name"></a> [grafana\_service\_account\_name](#input\_grafana\_service\_account\_name) | Name of the Kubernetes service account for Grafana | `string` | `"grafana"` | no |
 | <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | Name of the Kubernetes namespace to which resources will be deployed | `string` | `"monitoring"` | no |
 | <a name="input_loki_aggregator"></a> [loki\_aggregator](#input\_loki\_aggregator) | Loki aggregator to install, must be either `promtail` or `fluent-bit` | `string` | `"promtail"` | no |
-| <a name="input_loki_compactor_k8s_sa_name"></a> [loki\_compactor\_k8s\_sa\_name](#input\_loki\_compactor\_k8s\_sa\_name) | Name of the Kubernetes service account for the Loki compactor | `string` | `"loki-compactor"` | no |
+| <a name="input_loki_compactor_service_account_name"></a> [loki\_compactor\_service\_account\_name](#input\_loki\_compactor\_service\_account\_name) | Name of the Kubernetes service account for the Loki compactor | `string` | `"loki-compactor"` | no |
 | <a name="input_loki_enabled"></a> [loki\_enabled](#input\_loki\_enabled) | Enable Loki? | `bool` | `true` | no |
-| <a name="input_loki_k8s_sa_name"></a> [loki\_k8s\_sa\_name](#input\_loki\_k8s\_sa\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki"` | no |
 | <a name="input_loki_mode"></a> [loki\_mode](#input\_loki\_mode) | Loki mode, must be either `single` or `distributed` | `string` | `"distributed"` | no |
+| <a name="input_loki_service_account_name"></a> [loki\_service\_account\_name](#input\_loki\_service\_account\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki"` | no |
 | <a name="input_loki_storage_expiration_days"></a> [loki\_storage\_expiration\_days](#input\_loki\_storage\_expiration\_days) | Number of days to retain objects; `0` means never expire | `number` | `90` | no |
 | <a name="input_loki_storage_kms_key_arn"></a> [loki\_storage\_kms\_key\_arn](#input\_loki\_storage\_kms\_key\_arn) | (Optional) ARN of KMS key used to encrypt bucket objects; ignored if `create_kms_key` is set to `true` | `string` | `null` | no |
 | <a name="input_loki_storage_kms_key_deletion_window_in_days"></a> [loki\_storage\_kms\_key\_deletion\_window\_in\_days](#input\_loki\_storage\_kms\_key\_deletion\_window\_in\_days) | KMS key deletion window in days | `number` | `30` | no |
