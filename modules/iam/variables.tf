@@ -17,13 +17,13 @@ variable "loki_enabled" {
   default     = true
 }
 
-variable "loki_k8s_sa_name" {
+variable "loki_service_account_name" {
   type        = string
   description = "Name of the Kubernetes service account for Loki components"
   default     = "loki"
 }
 
-variable "loki_compactor_k8s_sa_name" {
+variable "loki_compactor_service_account_name" {
   type        = string
   description = "Name of the Kubernetes service account for the Loki compactor"
   default     = "loki-compactor"
@@ -63,7 +63,7 @@ variable "grafana_enabled" {
   default     = true
 }
 
-variable "grafana_k8s_sa_name" {
+variable "grafana_service_account_name" {
   type        = string
   description = "Name of the Kubernetes service account for Grafana"
   default     = "grafana"

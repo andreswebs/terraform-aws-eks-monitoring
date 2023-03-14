@@ -70,7 +70,7 @@ module "loki_assume_role_policy" {
   source                = "andreswebs/eks-irsa-policy-document/aws"
   version               = "~> 1.0"
   cluster_oidc_provider = var.cluster_oidc_provider
-  k8s_sa_name           = var.loki_k8s_sa_name
+  k8s_sa_name           = var.loki_service_account_name
   k8s_sa_namespace      = var.k8s_namespace
 }
 
@@ -101,7 +101,7 @@ module "loki_compactor_assume_role_policy" {
   source                = "andreswebs/eks-irsa-policy-document/aws"
   version               = "~> 1.0"
   cluster_oidc_provider = var.cluster_oidc_provider
-  k8s_sa_name           = var.loki_compactor_k8s_sa_name
+  k8s_sa_name           = var.loki_compactor_service_account_name
   k8s_sa_namespace      = var.k8s_namespace
 }
 
