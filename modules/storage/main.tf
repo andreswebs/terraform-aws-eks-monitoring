@@ -12,13 +12,13 @@ resource "aws_kms_alias" "this" {
 }
 
 resource "random_id" "id" {
-  count       = var.create_s3_id_suffix ? 1 : 0
+  count       = var.create_s3_bucket_id_suffix ? 1 : 0
   byte_length = 8
 }
 
 locals {
   s3_bucket_name_norm = var.s3_bucket_name == "" ? null : var.s3_bucket_name
-  s3_bucket_name      = var.create_s3_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
+  s3_bucket_name      = var.create_s3_bucket_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
   kms_key_arn_norm    = var.kms_key_arn == "" ? null : var.kms_key_arn
   kms_key_arn         = var.create_kms_key ? aws_kms_key.this[0].arn : local.kms_key_arn_norm
   sse_algorithm       = local.kms_key_arn == null ? "AES256" : "aws:kms"

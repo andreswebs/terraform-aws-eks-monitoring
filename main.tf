@@ -7,7 +7,7 @@ locals {
   s3_bucket_name_norm = var.loki_storage_s3_bucket_name == "" ? null : var.loki_storage_s3_bucket_name
   s3_bucket_name_pre  = var.create_loki_storage_id_suffix ? (local.s3_bucket_name_norm != null ? "${local.s3_bucket_name_norm}-${random_id.id[0].hex}" : "loki-storage-${random_id.id[0].hex}") : local.s3_bucket_name_norm
   s3_bucket_name      = var.create_loki_storage ? module.log_storage[0].bucket.id : (local.s3_bucket_name_pre == null ? "" : local.s3_bucket_name_pre)
-  kms_key_arn         = var.create_loki_storage_kms_key ? module.log_storage[0].encryption_key.arn : var.loki_storage_kms_key_arn
+  kms_key_arn         = var.create_loki_storage && var.create_loki_storage_kms_key ? module.log_storage[0].encryption_key.arn : var.loki_storage_kms_key_arn
 }
 
 module "log_storage" {
@@ -58,9 +58,9 @@ module "resources" {
   loki_compactor_service_account_name = var.loki_compactor_service_account_name
   grafana_service_account_name        = var.grafana_service_account_name
 
-  loki_iam_role_arn           = var.loki_enabled ? module.iam.role.loki.arn : null
-  loki_compactor_iam_role_arn = var.loki_enabled ? module.iam.role.loki_compactor.arn : null
-  grafana_iam_role_arn        = var.grafana_enabled ? module.iam.role.grafana.arn : null
+  loki_iam_role_arn           = var.loki_enabled ? (module.iam.role.loki != null ? module.iam.role.loki.arn : "") : ""
+  loki_compactor_iam_role_arn = var.loki_enabled ? (module.iam.role.loki_compactor != null ? module.iam.role.loki_compactor.arn : "") : ""
+  grafana_iam_role_arn        = var.grafana_enabled ? (module.iam.role.grafana != null ? module.iam.role.grafana.arn : "") : ""
 
   loki_storage_s3_bucket_name = local.s3_bucket_name
 
@@ -94,5 +94,9 @@ module "resources" {
   helm_create_namespace    = var.helm_create_namespace
   helm_dependency_update   = var.helm_dependency_update
   helm_skip_crds           = var.helm_skip_crds
+
+  depends_on = [
+    module.iam
+  ]
 
 }
