@@ -1,11 +1,9 @@
 data "aws_region" "current" {}
 
 locals {
-  prom_svc        = "prometheus-server.${var.k8s_namespace}.svc.cluster.local"
-  loki_svc        = var.loki_mode == "distributed" ? "loki-distributed-gateway.${var.k8s_namespace}.svc.cluster.local" : "loki.${var.k8s_namespace}.svc.cluster.local:3100"
-  grafana_svc     = "grafana.${var.k8s_namespace}.svc.cluster.local"
-  has_bucket_name = var.loki_storage_s3_bucket_name != null && var.loki_storage_s3_bucket_name != ""
-  loki_enabled    = var.loki_enabled && (local.has_bucket_name || var.loki_mode == "single")
+  prom_svc    = "prometheus-server.${var.k8s_namespace}.svc.cluster.local"
+  loki_svc    = var.loki_mode == "distributed" ? "loki-distributed-gateway.${var.k8s_namespace}.svc.cluster.local" : "loki.${var.k8s_namespace}.svc.cluster.local:3100"
+  grafana_svc = "grafana.${var.k8s_namespace}.svc.cluster.local"
 }
 
 resource "helm_release" "metrics_server" {
@@ -107,7 +105,7 @@ resource "helm_release" "grafana" {
 }
 
 resource "helm_release" "loki" {
-  count      = local.loki_enabled && var.loki_mode == "single" ? 1 : 0
+  count      = var.loki_enabled && var.loki_mode == "single" ? 1 : 0
   name       = var.helm_release_name_loki
   repository = "https://grafana.github.io/helm-charts"
   chart      = "loki"
@@ -134,6 +132,11 @@ resource "helm_release" "loki" {
   values = [
     file("${path.module}/helm-values/loki.yml")
   ]
+}
+
+data "aws_s3_bucket" "loki_storage" {
+  count  = var.loki_enabled && var.loki_mode == "distributed" ? 1 : 0
+  bucket = var.loki_storage_s3_bucket_name
 }
 
 resource "helm_release" "loki_distributed" {
@@ -164,7 +167,7 @@ resource "helm_release" "loki_distributed" {
   values = [
     templatefile("${path.module}/helm-values/loki-distributed.yml.tftpl", {
       aws_region                          = data.aws_region.current.name
-      bucket_name                         = var.loki_storage_s3_bucket_name
+      bucket_name                         = data.aws_s3_bucket.loki_storage[0].id
       loki_iam_role_arn                   = var.loki_iam_role_arn
       loki_service_account_name           = var.loki_service_account_name
       loki_compactor_iam_role_arn         = var.loki_compactor_iam_role_arn
@@ -243,7 +246,7 @@ locals {
   release_metrics_server = var.prometheus_enabled || var.metrics_server_enabled ? helm_release.metrics_server[0] : null
   release_grafana        = var.grafana_enabled ? helm_release.grafana[0] : null
   release_prometheus     = var.prometheus_enabled ? helm_release.prometheus[0] : null
-  release_loki           = local.loki_enabled ? (var.loki_mode == "distributed" ? helm_release.loki_distributed[0] : helm_release.loki[0]) : null
-  release_aggregator     = local.loki_enabled ? (var.loki_aggregator == "promtail" ? helm_release.promtail[0] : helm_release.fluent_bit[0]) : null
-  namespace              = var.prometheus_enabled ? local.release_prometheus.metadata[0].namespace : (var.grafana_enabled ? local.release_grafana.metadata[0].namespace : (local.loki_enabled ? local.release_loki.metadata[0].namespace : null))
+  release_loki           = var.loki_enabled ? (var.loki_mode == "distributed" ? helm_release.loki_distributed[0] : helm_release.loki[0]) : null
+  release_aggregator     = var.loki_enabled ? (var.loki_aggregator == "promtail" ? helm_release.promtail[0] : helm_release.fluent_bit[0]) : null
+  namespace              = var.prometheus_enabled ? local.release_prometheus.metadata[0].namespace : (var.grafana_enabled ? local.release_grafana.metadata[0].namespace : (var.loki_enabled ? local.release_loki.metadata[0].namespace : null))
 }

@@ -1,3 +1,4 @@
+---
 serviceAccount:
   create: true
   name:  ${loki_service_account_name}
@@ -6,6 +7,9 @@ serviceAccount:
 
 loki:
   config: |
+    common:
+      compactor_address: {{ include "loki.compactorFullname" . }}:3100
+
     auth_enabled: false
 
     server:
@@ -100,12 +104,16 @@ compactor:
 
 ingester:
   replicas: 2
+  maxUnavailable: 1
 
 distributor:
   replicas: 2
+  maxUnavailable: 1
 
 querier:
   replicas: 2
+  maxUnavailable: 1
 
 queryFrontend:
   replicas: 2
+  maxUnavailable: 1
