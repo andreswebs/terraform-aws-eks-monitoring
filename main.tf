@@ -42,6 +42,11 @@ module "iam" {
 
   grafana_enabled = var.grafana_enabled
   loki_enabled    = var.loki_enabled
+
+  depends_on = [
+    module.log_storage
+  ]
+
 }
 
 module "resources" {

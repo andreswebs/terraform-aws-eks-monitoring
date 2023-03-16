@@ -39,8 +39,8 @@ module "monitoring_iam" {
 | <a name="input_loki_enabled"></a> [loki\_enabled](#input\_loki\_enabled) | Enable Loki? | `bool` | `true` | no |
 | <a name="input_loki_iam_role_name"></a> [loki\_iam\_role\_name](#input\_loki\_iam\_role\_name) | Name of IAM role for Loki | `string` | `"loki"` | no |
 | <a name="input_loki_service_account_name"></a> [loki\_service\_account\_name](#input\_loki\_service\_account\_name) | Name of the Kubernetes service account for Loki components | `string` | `"loki"` | no |
-| <a name="input_loki_storage_kms_key_arn"></a> [loki\_storage\_kms\_key\_arn](#input\_loki\_storage\_kms\_key\_arn) | (Optional) ARN of the KMS key used for S3 encryption | `string` | `""` | no |
-| <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of the S3 bucket used for Loki storage | `string` | `""` | no |
+| <a name="input_loki_storage_kms_key_arn"></a> [loki\_storage\_kms\_key\_arn](#input\_loki\_storage\_kms\_key\_arn) | (Optional) ARN of the KMS key used for S3 encryption | `string` | `null` | no |
+| <a name="input_loki_storage_s3_bucket_name"></a> [loki\_storage\_s3\_bucket\_name](#input\_loki\_storage\_s3\_bucket\_name) | Name of the S3 bucket used for Loki storage | `string` | n/a | yes |
 
 ## Modules
 
@@ -82,6 +82,6 @@ module "monitoring_iam" {
 | [aws_iam_policy_document.bucket_crud](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.kms_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.loki_permissions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
+| [aws_s3_bucket.loki_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 
 [//]: # (END_TF_DOCS)

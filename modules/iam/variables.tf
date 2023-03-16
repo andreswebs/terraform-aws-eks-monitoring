@@ -44,13 +44,11 @@ variable "loki_compactor_iam_role_name" {
 variable "loki_storage_s3_bucket_name" {
   type        = string
   description = "Name of the S3 bucket used for Loki storage"
-  default     = ""
 }
-
 variable "loki_storage_kms_key_arn" {
-  type = string
+  type        = string
   description = "(Optional) ARN of the KMS key used for S3 encryption"
-  default = ""
+  default     = null
 }
 
 ## end loki
